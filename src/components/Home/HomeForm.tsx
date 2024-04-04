@@ -1,5 +1,4 @@
 'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -10,13 +9,16 @@ const createTopicSchema = z.object({
 
 type CreateTopicData = z.infer<typeof createTopicSchema>
 
-export function HomeForm() {
+export async function HomeForm() {
   const { register, handleSubmit } = useForm<CreateTopicData>({
     resolver: zodResolver(createTopicSchema),
   })
 
-  function createTopic(data: CreateTopicData) {
-    console.log(data)
+  async function createTopic(data: CreateTopicData) {
+    await fetch('/api/topics', {
+      body: JSON.stringify(data),
+      method: 'POST',
+    })
   }
 
   return (
@@ -30,7 +32,10 @@ export function HomeForm() {
         placeholder="What is React?"
         {...register('name')}
       />
-      <button type="submit" className="bg-orange rounded-md p-1 w-32">
+      <button
+        type="submit"
+        className="bg-orange-500 rounded-md p-1 w-32 hover:bg-orange-300 transition-colors"
+      >
         Create topic
       </button>
     </form>
