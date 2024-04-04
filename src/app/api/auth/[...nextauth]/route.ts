@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import clientPromise from '@/config/mongo'
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
