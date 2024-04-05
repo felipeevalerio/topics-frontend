@@ -1,5 +1,5 @@
-import { HomeActions } from '@/components/Home/HomeActions'
-import { Logo } from '@/components/Logo'
+import { HomeActions } from './components/Home/HomeActions'
+import { Logo } from './components/Logo'
 
 export default function Home() {
   return (

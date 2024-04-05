@@ -1,7 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth'
-import Image from 'next/image'
-import GitHubLogo from '@/assets/github-logo.svg'
+import { Avatar } from './Avatar'
 
 export async function Profile() {
   const session = await getServerSession(authOptions)
@@ -11,17 +10,10 @@ export async function Profile() {
   const { name, image } = session.user
 
   return (
-    <div className="flex gap-2 items-center">
-      <Image
-        src={image ?? GitHubLogo}
-        alt=""
-        width={48}
-        height={48}
-        className="rounded-full"
-      />
-      <p>
+    <Avatar image={image}>
+      <span>
         Logged in as <strong>{name}</strong>
-      </p>
-    </div>
+      </span>
+    </Avatar>
   )
 }

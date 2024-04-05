@@ -1,6 +1,8 @@
-import { createTopicSchema } from '@/domain/schemas/TopicSchema'
+import { HTTP_STATUS_CODES } from '@/domain/consts/HttpStatusCode'
+import { createTopicSchema } from '@/domain/contracts/CreateTopicContract'
 import { AuthUtils } from '@/utils/AuthUtils'
 import { NextRequest, NextResponse } from 'next/server'
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,12 +11,10 @@ export async function POST(request: NextRequest) {
       createTopicSchema,
     )
 
-    const { name } = requestBody.data
-
     const userId = await AuthUtils.GetUserIdFromSession(request)
 
     const topic = {
-      name,
+      ...requestBody.data,
       createdBy: userId.toString(),
     }
 
@@ -24,15 +24,17 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-    })
+    }).then((res) => res.json())
 
-    const responseJSON = await topicResponse.json()
-
-    return NextResponse.json(responseJSON, {
+    return NextResponse.json(topicResponse, {
       status: topicResponse.status,
     })
   } catch (err) {
     const error = err as Error
-    return NextResponse.json(error.message)
+    console.log(err)
+
+    return NextResponse.json(error.message, {
+      status: HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+    })
   }
 }

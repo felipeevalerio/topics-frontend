@@ -22,6 +22,7 @@ const config: Config = {
         500: '#f2f2f2',
         700: '#f0f0f0',
       },
+      error: '#ff3333',
     },
   },
   plugins: [],
